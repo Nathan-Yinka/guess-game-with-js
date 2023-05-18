@@ -13,7 +13,7 @@ let awards = document.querySelector(".awards");
 let audio = document.querySelectorAll("audio");
 let random;
 let clearTimer;
-let highScore = [];
+let highScore = [0];
 let myscore = 0
 let winSetOut;
 let entries = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
@@ -155,7 +155,7 @@ function resetAll() {
 // function that handles the high score so that the highest score is always displayed
 function handleHighScore(high) {
     let max = Math.max(...high)
-    max != Infinity ? score.innerHTML = `Highscore:${max} Trials` : max = 0
+    max == Infinity ? max = 0: score.innerHTML = `Highscore:${max}/5 points` 
 }
 // funnction that show you award when you win or lose
 function handleAwards(text) {
