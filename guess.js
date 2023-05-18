@@ -13,89 +13,97 @@ let awards = document.querySelector(".awards");
 let audio = document.querySelectorAll("audio");
 let random;
 let clearTimer;
-let highScore =[];
-let entries = ["1","2","3","4","5","6","7","8","9","0"];
+let highScore = [];
+let entries = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 // all Event Listeners
-check.addEventListener("click",handleCheck);
-reset.addEventListener("click",resetAll);
-guess.addEventListener("click",()=>{Sound(3)});
-window.addEventListener("keydown",(event)=>{
+check.addEventListener("click", handleCheck);
+reset.addEventListener("click", resetAll);
+guess.addEventListener("click", () => { Sound(3) });
+window.addEventListener("keydown", (event) => {
     Sound(3);
-    event.key=="Enter"? handleCheck():"";
-    event.key=='Escape'? resetAll():"";
+    event.key == "Enter" ? handleCheck() : "";
+    event.key == 'Escape' ? resetAll() : "";
 })
-// window.addEventListener("keydown",(event)=>{
-//     if(entries.includes(event.key)){
-//         guess.value = event.key
-//     }
-// })
+
+window.addEventListener("keydown",(event)=>{
+    if(window.matchMedia("(pointer: fine)").matches && window.matchMedia("(hover: hover)").matches){
+        if(entries.includes(event.key)){
+            guess.value = event.key
+        }
+    }
+    
+    
+})
 // 
 // function to check when the check button has been pressed.
-function handleCheck(){
+function handleCheck() {
     randomNum()
     Sound(2);
-    if(check.disabled){}
-    else if (guess.value == null || guess.value < 1 || guess.value > 5 || guess.value == ""){
+    if (check.disabled) { }
+    else if (guess.value == null || guess.value < 1 || guess.value > 5 || guess.value == "") {
         invaild()
         handleTrials()
     }
-    else if(guess.value == random){
+    else if (guess.value == random) {
         handleTrials();
         youWin();
-        
+
     }
-    else{
-            incorrect();
-            handleTrials();
-        }
+    else {
+        incorrect();
+        handleTrials();
+    }
 }
 // function to genarate random number from 1-5
-function randomNum(){
-    random = Math.floor(Math.random()*5)+1;
+function randomNum() {
+    random = Math.floor(Math.random() * 5) + 1;
 }
 
 //  function to run when the guess is correct 
-function youWin(){
+function youWin() {
     display.innerHTML = "Correct!!!";
     number.innerHTML = random;
     body.classList.remove("fail")
     body.classList.remove("body")
     body.classList.add("correct")
     check.setAttribute("disabled", "true")
-        guess.setAttribute("disabled", "true")
-        msg.innerHTML = "Play again!!"
-    highScore.push(5-trials.innerHTML)
+    guess.setAttribute("disabled", "true")
+    msg.innerHTML = "Play again!!"
+    highScore.push(5 - trials.innerHTML)
     handleHighScore(highScore)
     handleAwards("you win");
     Sound(0)
 }
 // function when an invaild guess has been entered
-function invaild(){
+function invaild() {
     warning.style.display = "block";
-        setTimeout(()=> warning.style.display = "none", 3000);
-        guess.value = "";
+    setTimeout(() => warning.style.display = "none", 3000);
+    guess.value = "";
+    body.classList.remove("body")
+    body.classList.remove("correct")
+    body.classList.add("fail")
 }
 
 // function that handles number of trial..... the hightest number of trial is 5...
-function handleTrials(){
-    trials.innerHTML --
-    if(trials.innerHTML == 0 && guess.value != random){
+function handleTrials() {
+    trials.innerHTML--
+    if (trials.innerHTML == 0 && guess.value != random) {
         display.innerHTML = "Game Over!!!";
         body.classList.add("fail")
         body.classList.remove("correct")
         body.classList.remove("body")
-        setTimeout(()=>{
+        setTimeout(() => {
             body.classList.remove("fail")
             body.classList.add("body")
-        },1000)
-        clearTimer =setInterval(()=>{
+        }, 1000)
+        clearTimer = setInterval(() => {
             body.classList.remove("body")
             body.classList.add("fail")
-            setTimeout(()=>{
+            setTimeout(() => {
                 body.classList.remove("fail")
                 body.classList.add("body")
-            },1000)
-        },2000)
+            }, 1000)
+        }, 2000)
         number.innerHTML = random;
         check.setAttribute("disabled", "true")
         guess.setAttribute("disabled", "true")
@@ -103,10 +111,10 @@ function handleTrials(){
         handleAwards("you lose")
         Sound(1)
     }
-    trials.innerHTML < 0? trials.innerHTML = 0 :""
+    trials.innerHTML < 0 ? trials.innerHTML = 0 : ""
 }
 //  function that runs when the entered guess isnt correct
-function incorrect(){
+function incorrect() {
     body.classList.remove("body")
     body.classList.remove("correct")
     body.classList.add("fail")
@@ -116,12 +124,12 @@ function incorrect(){
 }
 
 // fumnction that reset the game back to default 
-function resetAll(){
+function resetAll() {
     guess.value = "";
     number.innerHTML = "?";
-    trials.innerHTML=5;
-    display.innerHTML= "Guess My Number!"
-    msg.innerHTML= "Start guessing..."
+    trials.innerHTML = 5;
+    display.innerHTML = "Guess My Number!"
+    msg.innerHTML = "Start guessing..."
     body.classList.remove("fail")
     body.classList.remove("correct")
     body.classList.add("body")
@@ -134,25 +142,27 @@ function resetAll(){
 }
 
 // function that handles the high score so that the highest score is always displayed
-function handleHighScore(high){
+function handleHighScore(high) {
     let max = Math.min(...high)
-    max != Infinity ? score.innerHTML = `Highscore:${max} Trials`:max=0
+    max != Infinity ? score.innerHTML = `Highscore:${max} Trials` : max = 0
 }
 // funnction that show you award when you win or lose
-function handleAwards(text){
+function handleAwards(text) {
     text = text.toUpperCase();
     awards.innerHTML = text;
-    setInterval(()=>{
+    setInterval(() => {
         awards.style.fontSize = "800%"
-    },2000);
-    setInterval(()=>{
+    }, 2000);
+    setInterval(() => {
         awards.style.fontSize = "600%"
-    },3000);
+    }, 3000);
 }
 // function that plays the sound
-function Sound(e){
+function Sound(e) {
     audio[e].play()
 }
+
+
 
 
 
