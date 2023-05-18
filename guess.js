@@ -35,11 +35,11 @@ window.addEventListener("keydown",(event)=>{
     }
 })
 
-randomNum()
-console.log(random);
+
+// console.log(random);
 // function to check when the check button has been pressed.
 function handleCheck() {
-    
+    randomNum()
     Sound(2);
     if(trials.innerHTML == 0){
         handleTrials()
