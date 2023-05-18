@@ -24,11 +24,11 @@ window.addEventListener("keydown",(event)=>{
     event.key=="Enter"? handleCheck():"";
     event.key=='Escape'? resetAll():"";
 })
-window.addEventListener("keydown",(event)=>{
-    if(entries.includes(event.key)){
-        guess.value = event.key
-    }
-})
+// window.addEventListener("keydown",(event)=>{
+//     if(entries.includes(event.key)){
+//         guess.value = event.key
+//     }
+// })
 // 
 // function to check when the check button has been pressed.
 function handleCheck(){
