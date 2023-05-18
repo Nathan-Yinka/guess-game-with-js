@@ -14,6 +14,8 @@ let audio = document.querySelectorAll("audio");
 let random;
 let clearTimer;
 let highScore = [];
+let myscore = 0
+let winSetOut;
 let entries = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 // all Event Listeners
 check.addEventListener("click", handleCheck);
@@ -31,27 +33,32 @@ window.addEventListener("keydown",(event)=>{
             guess.value = event.key
         }
     }
-    
-    
 })
-// 
+
+randomNum()
+console.log(random);
 // function to check when the check button has been pressed.
 function handleCheck() {
-    randomNum()
+    
     Sound(2);
-    if (check.disabled) { }
+    if(trials.innerHTML == 0){
+        handleTrials()
+    }
+    else if (check.disabled) { }
     else if (guess.value == null || guess.value < 1 || guess.value > 5 || guess.value == "") {
         invaild()
         handleTrials()
+        
     }
     else if (guess.value == random) {
-        handleTrials();
         youWin();
+        handleTrials()
+
 
     }
     else {
         incorrect();
-        handleTrials();
+        handleTrials()
     }
 }
 // function to genarate random number from 1-5
@@ -63,16 +70,17 @@ function randomNum() {
 function youWin() {
     display.innerHTML = "Correct!!!";
     number.innerHTML = random;
-    body.classList.remove("fail")
+    body.classList.remove("fail");
     body.classList.remove("body")
     body.classList.add("correct")
-    check.setAttribute("disabled", "true")
-    guess.setAttribute("disabled", "true")
+    guess.value = "";
     msg.innerHTML = "Play again!!"
-    highScore.push(5 - trials.innerHTML)
-    handleHighScore(highScore)
+    myscore++;
+    highScore.push(myscore);
     handleAwards("you win");
-    Sound(0)
+     winSetOut= setTimeout(handleAwards,1000,"");
+    Sound(0);
+    
 }
 // function when an invaild guess has been entered
 function invaild() {
@@ -87,7 +95,7 @@ function invaild() {
 // function that handles number of trial..... the hightest number of trial is 5...
 function handleTrials() {
     trials.innerHTML--
-    if (trials.innerHTML == 0 && guess.value != random) {
+    if (trials.innerHTML == 0) {
         display.innerHTML = "Game Over!!!";
         body.classList.add("fail")
         body.classList.remove("correct")
@@ -104,12 +112,14 @@ function handleTrials() {
                 body.classList.add("body")
             }, 1000)
         }, 2000)
+        clearTimeout(winSetOut);
         number.innerHTML = random;
-        check.setAttribute("disabled", "true")
-        guess.setAttribute("disabled", "true")
+        check.setAttribute("disabled", "true");
+        guess.setAttribute("disabled", "true");
         msg.innerHTML = "Play again!!"
-        handleAwards("you lose")
-        Sound(1)
+        handleAwards(`game over \n<small>score=${myscore}</small>`)
+        Sound(1);
+        handleHighScore(highScore);
     }
     trials.innerHTML < 0 ? trials.innerHTML = 0 : ""
 }
@@ -139,11 +149,12 @@ function resetAll() {
     warning.style.display = "none"
     handleAwards("")
     Sound(4)
+    myscore= 0
 }
 
 // function that handles the high score so that the highest score is always displayed
 function handleHighScore(high) {
-    let max = Math.min(...high)
+    let max = Math.max(...high)
     max != Infinity ? score.innerHTML = `Highscore:${max} Trials` : max = 0
 }
 // funnction that show you award when you win or lose
@@ -151,10 +162,10 @@ function handleAwards(text) {
     text = text.toUpperCase();
     awards.innerHTML = text;
     setInterval(() => {
-        awards.style.fontSize = "800%"
+        awards.style.fontSize = "350%"
     }, 2000);
     setInterval(() => {
-        awards.style.fontSize = "600%"
+        awards.style.fontSize = "300%"
     }, 3000);
 }
 // function that plays the sound
