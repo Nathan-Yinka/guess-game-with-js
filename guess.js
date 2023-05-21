@@ -35,8 +35,6 @@ window.addEventListener("keydown",(event)=>{
     }
 })
 
-
-// console.log(random);
 // function to check when the check button has been pressed.
 function handleCheck() {
     randomNum()
@@ -48,19 +46,17 @@ function handleCheck() {
     else if (guess.value == null || guess.value < 1 || guess.value > 5 || guess.value == "") {
         invaild()
         handleTrials()
-        
     }
     else if (guess.value == random) {
         youWin();
         handleTrials()
-
-
     }
     else {
         incorrect();
         handleTrials()
     }
 }
+
 // function to genarate random number from 1-5
 function randomNum() {
     random = Math.floor(Math.random() * 5) + 1;
@@ -80,7 +76,6 @@ function youWin() {
     handleAwards("you win");
      winSetOut= setTimeout(handleAwards,1000,"");
     Sound(0);
-    
 }
 // function when an invaild guess has been entered
 function invaild() {
@@ -131,6 +126,7 @@ function incorrect() {
     display.innerHTML = "Opps you're wrong!"
     msg.innerHTML = "Continue playing"
     guess.value = "";
+    number.innerHTML = random;
 }
 
 // fumnction that reset the game back to default 
